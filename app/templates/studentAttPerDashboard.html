@@ -2,75 +2,56 @@
 {% load static %}
 {% block title %}StudentDashBoard{% endblock title %}
 {% block body %}
-    <!--   <div class="wrapper flex flex-col m-10 justify-center items-center">-->
-    <!--            <div class="information w-[100%] h-1/2 p-10 bg-slate-300 flex flex-row justify-around rounded-md">-->
-    <!--                <div class="classRoll">-->
-    <!--                    <p class="font-medium md:text-xl"></p>-->
-    <!--                    <p class="font-medium md:text-xl">{{ request.user.username }}</p>-->
-    <!--             </div>-->
-    <!--             <div class="name md:text-xl font-medium pt-2">-->
-    <!--                 Sourav khan-->
-    <!--             </div>-->
-    <!--         </div>-->
+<!--   <div class="wrapper flex flex-col m-10 justify-center items-center">-->
+<!--            <div class="information w-[100%] h-1/2 p-10 bg-slate-300 flex flex-row justify-around rounded-md">-->
+<!--                <div class="classRoll">-->
+<!--                    <p class="font-medium md:text-xl"></p>-->
+<!--                    <p class="font-medium md:text-xl">{{ request.user.username }}</p>-->
+<!--             </div>-->
+<!--         </div>-->
 
-    <!--          {% for subject in studentattendence %}-->
-        <!--              <div class="flex flex-row flex-wrap">-->
-        <!--                      <div class="rounded-lg shadow-xl {% if subject.att_percentage > 75 %}bg-[
-            #84EB82]{% else%}bg-[#F6BDC0] {% endif %} mt-10 mr-5 p-10">-->
-        <!--                   <header class=" text-2xl font-extrabold py-4 px-4 text-center h1Font">-->
-        <!--                       {{ subject.subjectname}}-->
-        <!--                   </header>-->
-        <!--                   <div>-->
-        <!--                     <ul class="text-gray-500 text-center font-semibold">-->
-        <!--                       <li class="text-xl">Attended = {{ subject.att_count }}</li>-->
-        <!--                       <li class="text-xl">Total = {{ subject.total_count }}</li>-->
-        <!--                       <li class="text-xl">Percentage = {{ subject.att_percentage }}%</li>-->
-        <!--                     </ul>-->
-        <!--                   </div>-->
-        <!--                   &lt;!&ndash;Card Footer&ndash;&gt;-->
-        <!--                   <footer class="text-center py-3 px-8 text-gray-500">-->
-        <!--                     <button-->
-        <!--                       class="py-2 px-4 mt-5 bg-green-500 rounded-lg text-white font-semibold hover:bg-green-600"#}-->
+<!--          {% for subject in studentattendence %}-->
+<!--              <div class="flex flex-row flex-wrap">-->
+<!--                      <div class="rounded-lg shadow-xl {% if subject.att_percentage > 75 %}bg-[#84EB82]{% else%}bg-[#F6BDC0] {% endif %} mt-10 mr-5 p-10">-->
+<!--                   <header class=" text-2xl font-extrabold py-4 px-4 text-center h1Font">-->
+<!--                       {{ subject.subjectname}}-->
+<!--                   </header>-->
+<!--                   <div>-->
+<!--                     <ul class="text-gray-500 text-center font-semibold">-->
+<!--                       <li class="text-xl">Attended = {{ subject.att_count }}</li>-->
+<!--                       <li class="text-xl">Total = {{ subject.total_count }}</li>-->
+<!--                       <li class="text-xl">Percentage = {{ subject.att_percentage }}%</li>-->
+<!--                     </ul>-->
+<!--                   </div>-->
+<!--                   &lt;!&ndash;Card Footer&ndash;&gt;-->
+<!--                   <footer class="text-center py-3 px-8 text-gray-500">-->
+<!--                     <button-->
+<!--                       class="py-2 px-4 mt-5 bg-green-500 rounded-lg text-white font-semibold hover:bg-green-600"#}-->
 
-        <!--                      >-->
-        <!--                         View Details-->
-        <!--                        </button>-->
-        <!--                      </footer>-->
-        <!--                    </div>-->
-        <!--                 </div>-->
-        <!--           {% endfor %}-->
-    <!--    </div>-->
+<!--                      >-->
+<!--                         View Details-->
+<!--                        </button>-->
+<!--                      </footer>-->
+<!--                    </div>-->
+<!--                 </div>-->
+<!--           {% endfor %}-->
+<!--    </div>-->
 
-    <div class="flex flex-wrap  justify-center p-10">
-    {% for subject in studentattendence %}
-        <div class="rounded-lg shadow-xl {% if subject.att_percentage > 75 %}bg-[#A5D6A7]{% else %}bg-[#F6BDC0] {% endif %} mt-10 mr-5 p-10">
-        #}
-
-        <div class="flex justify-center p-2">
-            <div class="rounded-lg shadow-lg bg-white max-w-sm ">
-                <a href="#!">
-                    <img class="rounded-t-lg" src="https://www.gstatic.com/classroom/themes/img_code.jpg" alt=""/>
-                    <div class="rounded-t-lg p-10 bg-blue-600"></div>
-                </a>
-                <div class="p-16">
-                    <h5 class="text-gray-900 text-2xl font-bold mb-2 "
-                        style="font-family: 'Julius Sans One', sans-serif;">{{ subject.subjectname }}</h5>
-                    <hr class="mb-10"/>
-                    <ul class="text-gray-700 text-base mb-4">
-                        <li>Attended = {{ subject.att_count }}</li>
-                        <li>Total = {{ subject.total_count }}</li>
-                        <li class="text-lg {% if subject.att_percentage > 75 %}text-[#4CAF50]{% else %}text-[#FF0800] {% endif %}">
-                            Percentage = <span class="text-xl font-bold">{{ subject.att_percentage }}%</span></li>
-                    </ul>
-                    <a href='/student/dashboard/{{ subject.subjectname_id }}'>
-                        <button type="button"
-                                class=" inline-block px-6 py-2.5 bg-blue-600  text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                            View Details
-                        </button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-</div>
+           <div class="flex flex-wrap  justify-center p-10">
+               {% for subject in studentattendence %}
+                     <div class="flex justify-center p-2">
+                          <div class="rounded-lg shadow-lg bg-white max-w-sm ">
+                            <div class="p-16">
+                              <h5 class="text-gray-900 text-2xl font-bold mb-2 " style="font-family: 'Julius Sans One', sans-serif;">{{ subject.subjectname }}</h5>
+                                <hr class="mb-10"/>
+                                <ul class="text-gray-700 text-base mb-4">
+                                    <li >Attended = {{ subject.att_count }}</li>
+                                    <li>Total = {{ subject.total_count }}</li>
+                                    <li class="text-lg {% if subject.att_percentage > 75 %}text-[#4CAF50]{% else%}text-[#FF0800] {% endif %}">Percentage <span class="text-xl font-bold">{{ subject.att_percentage }}%</span></li>
+                                </ul>
+                              <button type="button" class=" inline-block px-6 py-2.5 bg-blue-600  text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">View Details</button>
+                            </div>
+                          </div>
+                        </div>
+           {% endfor %}
 {% endblock body %}
