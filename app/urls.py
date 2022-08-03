@@ -37,6 +37,7 @@ urlpatterns = [
     path('excel/', views.ImportExport, name="import_export"),
     path('addattendence/', views.attendencepage, name="attendencepage"),
     path('addattendencesuccessfully/', views.addattendencesuccessfully, name="addattendencesuccessfully"),
+    path('addattendencesuccessfully/offline/', views.addattendencesuccessfullyoffline, name="addattendencesuccessfullyoffline"),
     # path('filter/',views.Filter,name="filter"),
     # path('filteredattendence/',views.Filteredattendence,name="filteredattendence")
     path('teacher/dashboard/', views.TeacherDashboard, name="teacher-dashboard"),
@@ -47,5 +48,9 @@ urlpatterns = [
     path('subjectfilter/', views.SubjectFilter, name="subjectfilter"),
     path('addclass/', views.AddDeleteClass, name="addclass"),
     path('addsubject/', views.AddDeleteSubject, name="addsubject"),
-    path('export/', views.ExportExcel, name="export")
+    path('export/', views.ExportExcel, name="export"),
+
+#      offline Attendence
+    path('addattendance/offline' , views.AddOfflineAttendance ),
+    path('getClassList' , views.getClassList)
 ]

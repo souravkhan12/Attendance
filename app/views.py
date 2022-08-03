@@ -22,7 +22,7 @@ import os
 import re
 from home import settings
 import numpy as np
-
+import json
 from django.db.models import Count
 
 regexteacher = r'\b[A-Za-z._%+-]+@jcboseust.ac.in'
@@ -63,6 +63,8 @@ def addattendencesuccessfully(request):
 
         ClassAttendence(classname=classname, subjectname=subjectname, date=date, uploaded_by=request.user,
                         students_present=len(finallist)).save()
+
+
         for i in range(len(finallist)):
 
             nam = finallist[i][0][12:]
@@ -75,13 +77,58 @@ def addattendencesuccessfully(request):
             #     updating the att count
             else:
                 #  creating attendence
-                SubjectAttendence(studentroll=rol, classname=classname, subjectname=subjectname, att_count=1).save()
+                SubjectAttendence( name = nam, studentroll=rol, classname=classname, subjectname=subjectname, att_count=1).save()
 
             Attendence(name=nam, rollno=rol, classname=classname, subjectname=subjectname, date=date).save()
 
         for document in excelfile:
             document.delete()
         return redirect('/teacher/dashboard')
+
+
+
+def addattendencesuccessfullyoffline(request):
+    if (request.method == 'POST'):
+        print("request submitted")
+        classname = request.POST.get('class')
+        subjectname = request.POST.get('subject')
+        date = request.POST.get('date')
+        clas = Class.objects.filter(classname=classname).first()
+
+        studentList = SubjectAttendence.objects.filter(classname=clas).values('studentroll','name').distinct()
+
+        absdata = request.POST.get('absdata').split(',')
+        print(absdata)
+
+        finallist = []
+        for i in studentList:
+             if( str(i['studentroll']) not in absdata):
+                 finallist.append(i)
+
+        clas = Class.objects.filter(classname=classname).first()
+        subjectname = Subject.objects.filter(subjectname=subjectname).first()
+        #
+        ClassAttendence(classname=clas, subjectname=subjectname, date=date, uploaded_by=request.user,
+                        students_present=len(finallist)/2).save()
+        for i in range(len(finallist)):
+
+            nam = finallist[i]['name']
+            rol = finallist[i]['studentroll']
+            #  will find object for the student in specific subject
+            subject_att = SubjectAttendence.objects.filter(studentroll=rol).filter(subjectname=subjectname).first()
+            if (subject_att):
+                subject_att.att_count += 1
+                subject_att.save()
+            #     updating the att count
+            else:
+                #  creating attendence
+                SubjectAttendence(name = nam, studentroll=rol, classname=clas, subjectname=subjectname, att_count=1).save()
+
+            Attendence(name=nam, rollno=rol, classname=clas, subjectname=subjectname, date=date).save()
+        #
+
+        return redirect('/teacher/dashboard')
+
 
 
 class CustomerRegistrationView(View):
@@ -267,6 +314,29 @@ def ExportExcel(request):
         df = pd.DataFrame(dict)
 
         # saving the dataframe
-        file_name = "Att_" + str(classname) + "_" + str(datetime.now().date()) + ".csv"
+        file_name = "Att_" + str(classname) + "_" + str(datetime.now().timestamp()) + ".csv"
         df.to_csv(file_name)
         return redirect('/export')
+
+
+def AddOfflineAttendance(request):
+    subjects = Subject.objects.filter(teacher=request.user)
+    classes = Class.objects.all()
+    date = datetime.now().date()
+    return render(request, 'addAttendenceOffline.html', {'classes': classes, 'curr_date': date, 'subjects': subjects})
+
+
+def getClassList(request):
+
+    if request.method == 'POST':
+        classname= request.POST.get('class')
+        subjectname = request.POST.get('subject')
+        date = request.POST.get('date')
+
+        #  get Class List on basis of classname
+        clas  = Class.objects.filter(classname = classname).first()
+
+        studentList = SubjectAttendence.objects.filter(classname = clas).values('studentroll').distinct()
+        print(studentList)
+        return render(request , 'attendanceOffline.html' , {'classname' : classname, 'subjectname' : subjectname, 'date': date,'studentList' : studentList})
+

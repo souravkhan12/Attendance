@@ -52,7 +52,11 @@
                 <li class="nav-item">
                     <a class="nav-link " aria-current="page" href="/export">Export Attendence </a>
                 </li>
-                {% else %}
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link " aria-current="page" href="/addattendance/offline">Offline </a>
+                </li>
+                {% elif user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link " aria-current="page" href="/student/dashboard">Student Dashboard</a>
                 </li>

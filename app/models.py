@@ -5,11 +5,11 @@ from home import settings
 import os
 # Create your models here.
 class ExcelFileUpload(models.Model):
-    file = models.FileField( upload_to=f"static/excel", max_length=100)
+    file = models.FileField( upload_to= 'static/excel/', max_length=100)
     def delete(self, *args, **kwargs):
         os.remove(os.path.join(settings.STATICFILES_DIRS[0], self.file.name))
         super(ExcelFileUpload,self).delete(*args,**kwargs)
-        
+
 class Class(models.Model):
     classname = models.CharField(max_length=20)
 
@@ -42,27 +42,11 @@ class ClassAttendence(models.Model):
 
 #     for optimisation of search query
 class SubjectAttendence(models.Model):
+    name = models.CharField(max_length = 20)
     studentroll = models.IntegerField()
     classname = models.ForeignKey(Class,on_delete=models.CASCADE)
     subjectname = models.ForeignKey(Subject,on_delete=models.CASCADE)
     att_count = models.IntegerField(default=0)
 
 
-# class Student(models.Model):
-#     name = models.CharField(max_length=20)
-#     rollno = models.IntegerField()
-#     classname = models.CharField(max_length=20,default='ce52')
-#     automata=models.IntegerField(default=0)
-#     signalandsystem=models.IntegerField(default=0)
-#     bio=models.IntegerField(default=0)
-#     vac=models.IntegerField(default=0)
-#     dbmssubject=models.IntegerField(default=0)
-#     dbmslab=models.IntegerField(default=0)
-#     oopssubject=models.IntegerField(default=0)
-#     oopslab=models.IntegerField(default=0)
-#     ml=models.IntegerField(default=0)
-    
 
-
-#     def __str__(self):
-#         return (self.id)

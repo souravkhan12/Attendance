@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load teachertags %}
+{% block title %}Confirm Offline Attendence{% endblock title %}
+
+
+{% block body %}
+
+    <div class="card transictions " >
+        <div class="card-body p-0" id="attendence">
+
+
+
+
+            <div class="table-responsive" style="height : 60vh;overflow-y:scroll">
+
+                <table class="table" name="table">
+                    <thead>
+                    <tr>
+                        <th>Roll Number</th>
+                        {#                                        <th>Name</th>#}
+                        <th>Action</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in studentList %}
+                        <tr>
+
+                            <td>{{ student.studentroll }}</td>
+                            {#                                        <td>{{data.0 | slice:"11:"}}</td>#}
+                            {#                                        <td>{{data.1}}</td>#}
+
+                            <td>
+                                <button type="button" class="btn btn-primary bg-blue-600 m-[10px]" class = "absent"
+                                        onclick=addToArray({{ student.studentroll }},this) > Absent
+                                </button>
+
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="card transictions " id="absentees">
+
+{#             body will be added dynamically through javascript                 #}
+
+        </div>
+
+{#         absentees table #}
+        <div style="display:flex ; justify-content:space-evenly">
+            <h5 class="total">Class: {{ classname }}</h5>
+            <h5>Subject: {{ subjectname }}</h5>
+            <h5> Date : {{ date }}</h5>
+
+
+
+        </div>
+         <div class="mt-3 text-center pb-3">
+                <button class="w-full h-12 text-lg w-32 bg-blue-600 rounded text-white hover:bg-blue-700" onclick= showClassList()> Class List
+                </button>
+                <button class="w-full h-12 text-lg w-32 bg-blue-600 rounded text-white hover:bg-blue-700" onclick= showAbsentees()> Absentees
+                </button>
+         </div>
+        <form class="form"  id="form" action="/addattendencesuccessfully/offline/" method="post">
+            {% csrf_token %}
+
+            <input type="hidden" name="class" value="{{ classname }}">
+            <input type="hidden" name="subject" value="{{ subjectname }}">
+            <input type="hidden" name="date" value="{{ date }}">
+            <input type="hidden" name="data" id="data" value= "{{ studentList  }}">
+            <input type="hidden" name="absdata" id="absdata" >
+            <input type="hidden" name="totalstudents" value="{{ studentList | length }}">
+            <div class="mt-3 text-center pb-3">
+                <button onclick="submitForm()"  type="button" class="w-full h-12 text-lg w-32 bg-blue-600 rounded text-white hover:bg-blue-700">Submit
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        var arr = []
+
+
+        function addToArray(student,button) {
+            if(arr.includes(student)){
+              var index = arr.indexOf(student);
+              if (index > -1) {
+                arr.splice(index, 1);
+              }
+
+              button.innerHTML = "Absent";
+              button.style.backgroundColor = "blue"
+            }else{
+                 arr.push(student);
+                 button.innerHTML = "Present";
+                 button.style.backgroundColor = "green"
+            }
+
+
+
+        }
+        function showClassList(){
+            document.getElementById('attendence').style.display = 'block';
+            document.getElementById('absentees').style.display = 'none';
+        }
+        function showAbsentees(){
+            document.getElementById('attendence').style.display = 'none';
+            document.getElementById('absentees').innerHTML = `
+             <div class="card-body p-0">
+
+            <div class="table-responsive" style="height : 60vh;overflow-y:scroll">
+
+                <table class="table" name="table">
+                    <thead>
+                    <tr>
+                        <th>Roll Number</th>
+
+                        <th>Action</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    ${ arr.map(roll => {
+                       console.log(roll);
+                return `<tr>
+
+                   <td>${ roll }</td>
+
+
+                   <td>
+                   <button type="button" class="btn btn-primary bg-blue-600 m-[10px]" class = "absent"
+                   onclick=addToArray(${roll},this) > Present
+                   </button>
+
+                   </td>
+
+                   </tr>`
+            })}
+
+
+
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+            `
+            document.getElementById('absentees').style.display = 'block';
+        }
+
+
+        function  submitForm(){
+
+           document.getElementById('absdata').value = arr;
+
+           document.getElementById('form').submit();
+        }
+    </script>
+{% endblock body %}
+
+
+
